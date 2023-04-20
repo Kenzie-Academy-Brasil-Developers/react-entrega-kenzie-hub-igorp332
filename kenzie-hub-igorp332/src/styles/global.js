@@ -5,6 +5,7 @@ export const GlobalStyle = createGlobalStyle`
    v2.0 | 20110126
    License: none (public domain)
     */
+
     html, body, div, span, applet, object, iframe,
     h1, h2, h3, h4, h5, h6, p, blockquote, pre,
     a, abbr, acronym, address, big, cite, code,
@@ -55,6 +56,12 @@ export const GlobalStyle = createGlobalStyle`
     form {
         display: flex;
         flex-direction: column;
+    }
+    button {
+        cursor: pointer;
+    }
+    a {
+        text-decoration: none;
     }
     :root {
         font-size: 62.5%;

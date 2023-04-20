@@ -2,33 +2,20 @@ import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import { formRegisterZod } from "./zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { api } from "../../services/api.js"
-import { toast } from "react-toastify"
-import 'react-toastify/dist/ReactToastify.css';
 import { StyledForm } from "../../pages/Register/style"
+import { useContext } from "react"
+import { UserContext } from "../../providers/UserContext"
 
 export const FormRegister = () => {
-    const navigate = useNavigate()
     const { register, handleSubmit, formState: {errors} } = useForm({
         resolver: zodResolver(formRegisterZod)
     })
-
-    const submit = async (formData) => {
-        delete formData.passwordagain
-        const response = await api.post("/users", formData)
-        if (response.statusText === 'Created') {
-            toast.success("Usuário cadastrado com sucesso")
-            setTimeout(() => {
-                navigate("/")
-            }, 2000)
-        } else {
-            toast.error(response.statusText)
-        }
-    }
+    const navigate = useNavigate()
+    const {submitFormRegister} = useContext(UserContext)
 
     return (
         <>
-            <StyledForm onSubmit={handleSubmit(submit)}>
+            <StyledForm onSubmit={handleSubmit(submitFormRegister)}>
                 <h1>Crie sua conta</h1>
                 <p>Rápido e grátis, vamos nessa!</p>
                 <label>Nome</label>
@@ -57,9 +44,10 @@ export const FormRegister = () => {
                     <option value="Quarto módulo (Backend Avançado)">Quarto módulo (Backend Avançado)</option>
                 </select>
                 {errors.course_module ? <p>{errors.course_module.message}</p> : null}
-                <button className="registerBtn">Cadastrar</button>
+                <button className="registerBtn" onClick={() => setTimeout(() => {
+                    navigate("/")
+                }, 2000)}>Cadastrar</button>
             </StyledForm>
         </>
     )
 }
-
